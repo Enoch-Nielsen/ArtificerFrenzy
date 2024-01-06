@@ -52,19 +52,19 @@ namespace Player
             moveInput = InputController.Instance.GetMoveInput();
             
             // Adjust Output
-            lookOutput = lookInput * (GameManager.Instance.baseLookSensitivity * GameManager.Instance.lookMultiplier * Time.deltaTime);
+            lookOutput = lookInput * (GameManager.Instance.baseLookSensitivity * GameManager.Instance.lookMultiplier);
 
-            Vector2 adjustedMoveInput = moveInput * (currentSpeed * Time.deltaTime);
+            Vector2 adjustedMoveInput = moveInput * currentSpeed;
             Vector3 moveGoal = (adjustedMoveInput.x * transform.right) + (adjustedMoveInput.y * transform.forward);
 
             moveOutput = Vector3.Lerp(moveOutput, moveGoal, moveInterpolationSpeed * Time.deltaTime);
             moveOutput.y = -1f * Time.deltaTime;
             
             // Rotate Player
-            transform.Rotate(Vector3.up, lookOutput);
+            transform.Rotate(Vector3.up, lookOutput * Time.deltaTime);
             
             // Move Player
-            _characterController.Move(moveOutput);
+            _characterController.Move(moveOutput * Time.deltaTime);
         }
 
         private void StartRun(object sender, EventArgs eventArgs)

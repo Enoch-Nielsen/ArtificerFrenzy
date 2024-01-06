@@ -523,15 +523,45 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2111210667205421787, guid: 499d6bfec8b6878409f600ad65d2ec00,
+        type: 3}
+      propertyPath: m_StopNaN
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2111210667205421787, guid: 499d6bfec8b6878409f600ad65d2ec00,
+        type: 3}
+      propertyPath: m_Antialiasing
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2111210667205421787, guid: 499d6bfec8b6878409f600ad65d2ec00,
+        type: 3}
+      propertyPath: m_RendererIndex
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3136088708674407718, guid: 499d6bfec8b6878409f600ad65d2ec00,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4754387717673582642, guid: 499d6bfec8b6878409f600ad65d2ec00,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6161686370389810799, guid: 499d6bfec8b6878409f600ad65d2ec00,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6708538206116971839, guid: 499d6bfec8b6878409f600ad65d2ec00,
         type: 3}
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
-    - target: {fileID: 6708538206116971839, guid: 499d6bfec8b6878409f600ad65d2ec00,
+    - target: {fileID: 8626091234141204796, guid: 499d6bfec8b6878409f600ad65d2ec00,
         type: 3}
-      propertyPath: m_TagString
-      value: Player
+      propertyPath: m_AnchorMax.y
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

@@ -26,6 +26,9 @@ public class GameManager : MonoBehaviour
         Instance = this;
 
         UpdateInGameSettings();
+
+        Application.targetFrameRate = 240;
+        QualitySettings.vSyncCount = 1;
     }
 
     private void Update()
