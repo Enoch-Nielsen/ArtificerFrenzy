@@ -1,4 +1,5 @@
 using System;
+using System.ComponentModel;
 using Artificing;
 using Input;
 using Interface;
@@ -29,8 +30,14 @@ namespace Player
             InputController.Instance.OnInteractPressedAction += OnPlayerInteract;
             InputController.Instance.OnThrowPressedAction += OnPlayerThrow;
             InputController.Instance.OnDropPressedAction += OnPlayerDrop;
+            InputController.Instance.OnTooltipPressedAction += OnPlayerActivateTooltips;
         }
 
+        /// <summary>
+        /// Called when the player attempts to interact with an object.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="eventArgs"></param>
         private void OnPlayerInteract(object sender, EventArgs eventArgs)
         {
             RaycastHit[] hits = new RaycastHit[10];
@@ -57,6 +64,21 @@ namespace Player
             }
         }
 
+        /// <summary>
+        /// Called when the player attempts to activate tooltips.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="eventArgs"></param>
+        private void OnPlayerActivateTooltips(object sender, EventArgs eventArgs)
+        {
+            GameManager.Instance.ToggleTooltips();
+        }
+
+        /// <summary>
+        /// Called when the player attempts to drop their currently held object.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="eventArgs"></param>
         private void OnPlayerDrop(object sender, EventArgs eventArgs)
         {
             if (currentHeldObject == null) return;
@@ -64,6 +86,11 @@ namespace Player
             MakeDropQuery();
         }
 
+        /// <summary>
+        /// Called when the player attempts to throw their currently held object.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="eventArgs"></param>
         private void OnPlayerThrow(object sender, EventArgs eventArgs)
         {
             if (currentHeldObject == null) return;
@@ -71,9 +98,13 @@ namespace Player
             Pickup tempPickup = currentHeldObject;
             
             MakeDropQuery();
-            tempPickup.Throw(throwForce);
+            tempPickup.Throw(throwForce, Camera.main!.transform.forward);
         }
-
+        
+        /// <summary>
+        /// Attempts to pickup the given pickup.
+        /// </summary>
+        /// <param name="pickup"></param>
         public void MakePickupQuery(Pickup pickup)
         {
             if (currentHeldObject != null) return;
@@ -82,6 +113,9 @@ namespace Player
             pickup.DoPickup(playerPickupTransform);
         }
 
+        /// <summary>
+        /// Attempts to drop the current held pickup.
+        /// </summary>
         public void MakeDropQuery()
         {
             if (currentHeldObject == null) return;
@@ -93,6 +127,24 @@ namespace Player
         public float GetPickupDistance()
         {
             return pickupDistance;
+        }
+
+        public bool PlayerHasArtifact()
+        {
+            return currentHeldObject != null;
+        }
+
+        /// <summary>
+        /// Attempts to return the current artifact to a station to be held by the station.
+        /// </summary>
+        /// <returns></returns>
+        public Pickup TakeArtifactQuery()
+        {
+            Pickup tempPickup = currentHeldObject;
+            
+            MakeDropQuery();
+
+            return tempPickup;
         }
     }
 }

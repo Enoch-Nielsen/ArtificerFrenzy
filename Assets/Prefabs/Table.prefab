@@ -99,6 +99,7 @@ MonoBehaviour:
   cameraBoom: {fileID: 3207107799208477446}
   lookAt: {fileID: 8800463672345531425}
   isTargeted: 0
+  hasStation: 0
 --- !u!1 &3396187245022783000
 GameObject:
   m_ObjectHideFlags: 0

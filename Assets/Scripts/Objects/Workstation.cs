@@ -1,3 +1,4 @@
+using Artificing;
 using Interface;
 using Player;
 using UnityEngine;
@@ -6,7 +7,13 @@ namespace Objects
 {
     public class Workstation : MonoBehaviour, I_Interactable
     {
+        [Header("References")]
         [SerializeField] private Transform cameraBoom, lookAt;
+        
+        [Header("Fields")]
+        [SerializeField] private bool hasStation;
+        
+        [Header("Values")]
         [SerializeField] private bool isTargeted = false;
         
         public void Interact()
@@ -17,6 +24,21 @@ namespace Objects
                 CameraController.Instance.SwitchCameraTarget(FirstPersonController.Instance.transform);
             
             isTargeted = !isTargeted;
+
+            if (hasStation)
+            {
+                if (PlayerInteractionController.Instance.PlayerHasArtifact())
+                {
+                    if (TryGetComponent<Station>(out Station station))
+                    {
+                        station.SetArtifact(PlayerInteractionController.Instance.TakeArtifactQuery());
+                    }
+                }
+                else if(TryGetComponent<Station>(out Station station))
+                {
+                    station.RemoveArtifact();
+                }
+            }
         }
 
         public bool GetIsTargeted()

@@ -1,61 +1,97 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Objects;
+using UI;
 using UnityEngine;
 using Random = System.Random;
 
 namespace Artificing
 {
+    [RequireComponent(typeof(Pickup))]
     public class Artifact : MonoBehaviour
     {
+        [Header("References")] 
+        [SerializeField] private DialogPopup artifactPopup;
+        
+        [Header("Artifact Values")]
         [SerializeField] private WeaponType weaponType;
         [SerializeField] private ArtifactComponents currentComponents;
         [SerializeField] private ArtifactComponents targetComponents;
 
         private void Start()
         {
-            currentComponents = ArtifactComponents.Empty();
+            currentComponents = ArtifactComponents.GenerateNewArtifact(2, true, true);
+            targetComponents = ArtifactComponents.Empty();
             
-            DebugArtifactString();
+            UpdateArtifactString();
         }
 
+        private void Update()
+        {
+            UpdateArtifactString();
+        }
+
+        /// <summary>
+        /// Adds and imbuement to the artifact.
+        /// </summary>
+        /// <param name="imbuement"></param>
         public void AddImbuement(Imbuement imbuement)
         {
             if (currentComponents.Imbuements.Contains(Imbuement.None))
                 currentComponents.Imbuements.Remove(Imbuement.None);
             
             currentComponents.Imbuements.Add(imbuement);
-            
-            DebugArtifactString();
         }
 
+        /// <summary>
+        /// Changes the artifacts modification.
+        /// </summary>
+        /// <param name="modification"></param>
         public void ChangeMod(Modification modification)
         {
             currentComponents.Modification = modification;
-            
-            DebugArtifactString();
         }
 
+        /// <summary>
+        /// Changes the artifacts rarity.
+        /// </summary>
+        /// <param name="rarity"></param>
         public void ChangeRarity(Rarity rarity)
         {
             currentComponents.Rarity = rarity;
-            
-            DebugArtifactString();
         }
 
-        public void DebugArtifactString()
+        /// <summary>
+        /// Updates the string for the artifact tooltip to match the artifacts description.
+        /// </summary>
+        public void UpdateArtifactString()
         {
-            Debug.Log(ArtifactComponents.ToString(currentComponents));
-            Debug.Log(ArtifactComponents.ToString(targetComponents));
+            artifactPopup.SetText(ArtifactComponents.ToString(currentComponents));
+            
+            // Debug.Log(ArtifactComponents.ToString(currentComponents));
+            // Debug.Log(ArtifactComponents.ToString(targetComponents));
         }
     }
 
+    /// <summary>
+    /// A struct representing all of an artifacts information.
+    /// </summary>
+    [System.Serializable]
     public struct ArtifactComponents
     {
         public WeaponType WeaponType;
         public List<Imbuement> Imbuements;
         public Modification Modification;
         public Rarity Rarity;
+
+        public ArtifactComponents(WeaponType weaponType, List<Imbuement> imbuements, Modification modification, Rarity rarity)
+        {
+            WeaponType = weaponType;
+            Imbuements = imbuements;
+            Modification = modification;
+            Rarity = rarity;
+        }
 
         /// <summary>
         /// Checks whether a valid artifact is of the correct type.
@@ -223,15 +259,16 @@ namespace Artificing
             return artifact;
         }
 
+        /// <summary>
+        /// Returns an empty artifact.
+        /// </summary>
+        /// <returns></returns>
         public static ArtifactComponents Empty()
         {
-            ArtifactComponents artifactComponents = new();
+            List <Imbuement> imbuements = new List<Imbuement> { Imbuement.None };
 
-            artifactComponents.WeaponType = WeaponType.Sword;
-            artifactComponents.Imbuements.Add(Imbuement.None);
-            artifactComponents.Rarity = Rarity.None;
-            artifactComponents.Modification = Modification.None;
-
+            ArtifactComponents artifactComponents = new ArtifactComponents(WeaponType.Sword, imbuements, Modification.None, Rarity.None);
+            
             return artifactComponents;
         }
     }

@@ -67,6 +67,13 @@ namespace Player
             }
         }
 
+        /// <summary>
+        /// Sets the cameras target to a new transform.
+        /// </summary>
+        /// <param name="target"></param>
+        /// <param name="doLock"> Whether the player can look while the target is set. </param>
+        /// <param name="interpolate"> Whether the camera moves smoothly to the new target. </param>
+        /// <param name="lookAt"> The position to look at while the camera is away from the player. </param>
         public void SwitchCameraTarget(Transform target, bool doLock = false, bool interpolate = false, Transform lookAt = null)
         {
             followTransform = target;
@@ -82,6 +89,9 @@ namespace Player
             {
                 previousLookAt = transform.rotation;
             }
+            
+            
+            FirstPersonController.Instance.SetPlayerState(doLock ? FirstPersonController.PlayerStatus.Locked : FirstPersonController.PlayerStatus.Active);
         }
 
         public void Shake()

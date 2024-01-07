@@ -46,6 +46,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <CurrentGameStatus>k__BackingField: 0
+  currentDialogPopups: []
+  tooltipsActive: 0
   baseLookSensitivity: 20
   lookMultiplier: 1
 --- !u!114 &9074407115721058950

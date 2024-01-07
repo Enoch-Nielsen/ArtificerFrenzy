@@ -7,7 +7,7 @@ namespace Player
 {
     public class FirstPersonController : MonoBehaviour
     {
-        private enum PlayerStatus
+        public enum PlayerStatus
         {
             Active, Locked
         }
@@ -106,6 +106,11 @@ namespace Player
         private void EndRun(object sender, EventArgs eventArgs)
         {
             currentSpeed = walkSpeed;
+        }
+
+        public void SetPlayerState(PlayerStatus status)
+        {
+            playerStatus = status;
         }
     }
 }

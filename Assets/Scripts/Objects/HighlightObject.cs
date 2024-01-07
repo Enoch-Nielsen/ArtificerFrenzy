@@ -8,6 +8,7 @@ namespace Objects
 {
     public class HighlightObject : MonoBehaviour
     {
+        [Header("References")]
         [SerializeField] private Material highlightMaterial;
         private static readonly int Alpha = Shader.PropertyToID("_Alpha");
         private Camera mainCamera;
@@ -52,6 +53,11 @@ namespace Objects
             }
         }
 
+        /// <summary>
+        /// Checks to see if the object being looked at has any affecting components.
+        /// </summary>
+        /// <param name="hit"></param>
+        /// <returns></returns>
         private bool CheckComponents(Transform hit)
         {
             if (hit.TryGetComponent<Pickup>(out Pickup p))
@@ -65,6 +71,10 @@ namespace Objects
             return false;
         }
 
+        /// <summary>
+        /// Highlights this object.
+        /// </summary>
+        /// <param name="highlight"></param>
         private void DoHighlight(bool highlight)
         {
             //GetComponent<MeshRenderer>().materials[1].SetFloat(Alpha, highlight ? 0.5f : 0f);
