@@ -8,7 +8,10 @@ namespace Player
     {
         public static PlayerUIController Instance;
         
+        [Header("References")]
         [SerializeField] private GameObject settingsMenu;
+        
+        // Values.
         private bool isMenuActive;
 
         private void Start()

@@ -89,6 +89,15 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Drop"",
+                    ""type"": ""Button"",
+                    ""id"": ""c3c88834-0b67-4115-beac-4ddec63e1fd2"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -289,6 +298,28 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""action"": ""Run"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""6319c911-708d-4ef7-a818-58c797c98081"",
+                    ""path"": ""<Keyboard>/g"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Drop"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""b362f05e-4bd1-40e9-9fae-bbf376198354"",
+                    ""path"": ""<Gamepad>/dpad/down"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Drop"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -304,6 +335,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         m_Primary_Tooltip = m_Primary.FindAction("Tooltip", throwIfNotFound: true);
         m_Primary_Throw = m_Primary.FindAction("Throw", throwIfNotFound: true);
         m_Primary_Run = m_Primary.FindAction("Run", throwIfNotFound: true);
+        m_Primary_Drop = m_Primary.FindAction("Drop", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -372,6 +404,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_Primary_Tooltip;
     private readonly InputAction m_Primary_Throw;
     private readonly InputAction m_Primary_Run;
+    private readonly InputAction m_Primary_Drop;
     public struct PrimaryActions
     {
         private @InputActions m_Wrapper;
@@ -383,6 +416,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         public InputAction @Tooltip => m_Wrapper.m_Primary_Tooltip;
         public InputAction @Throw => m_Wrapper.m_Primary_Throw;
         public InputAction @Run => m_Wrapper.m_Primary_Run;
+        public InputAction @Drop => m_Wrapper.m_Primary_Drop;
         public InputActionMap Get() { return m_Wrapper.m_Primary; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -413,6 +447,9 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
             @Run.started += instance.OnRun;
             @Run.performed += instance.OnRun;
             @Run.canceled += instance.OnRun;
+            @Drop.started += instance.OnDrop;
+            @Drop.performed += instance.OnDrop;
+            @Drop.canceled += instance.OnDrop;
         }
 
         private void UnregisterCallbacks(IPrimaryActions instance)
@@ -438,6 +475,9 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
             @Run.started -= instance.OnRun;
             @Run.performed -= instance.OnRun;
             @Run.canceled -= instance.OnRun;
+            @Drop.started -= instance.OnDrop;
+            @Drop.performed -= instance.OnDrop;
+            @Drop.canceled -= instance.OnDrop;
         }
 
         public void RemoveCallbacks(IPrimaryActions instance)
@@ -464,5 +504,6 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         void OnTooltip(InputAction.CallbackContext context);
         void OnThrow(InputAction.CallbackContext context);
         void OnRun(InputAction.CallbackContext context);
+        void OnDrop(InputAction.CallbackContext context);
     }
 }

@@ -23,6 +23,7 @@ namespace Player
 
         [Header("Move Interpolation")] 
         [SerializeField] private float moveInterpolationSpeed;
+        [SerializeField] private float gravity;
         
         [Header("Values")] 
         [SerializeField] private float currentSpeed;
@@ -35,6 +36,8 @@ namespace Player
 
         private void Start()
         {
+            Instance = this;
+            
             _characterController = GetComponent<CharacterController>();
             currentSpeed = walkSpeed;
 
@@ -47,31 +50,59 @@ namespace Player
             if (GameManager.Instance.CurrentGameStatus is GameManager.GameStatus.Paused or GameManager.GameStatus.GameOver) return;
             if (playerStatus != PlayerStatus.Active) return;
             
+            RotatePlayer();
+            MovePlayer();
+        }
+
+        /// <summary>
+        /// Gathers and Applies player input to rotate the player.
+        /// </summary>
+        private void RotatePlayer()
+        {
             // Gather Input
             lookInput = InputController.Instance.GetLookInput().x;
-            moveInput = InputController.Instance.GetMoveInput();
             
             // Adjust Output
             lookOutput = lookInput * (GameManager.Instance.baseLookSensitivity * GameManager.Instance.lookMultiplier);
+            
+            // Rotate Player
+            transform.Rotate(Vector3.up, lookOutput * Time.deltaTime);
+        }
 
+        /// <summary>
+        /// Gathers and applies player input to move the player.
+        /// </summary>
+        private void MovePlayer()
+        {
+            // Gather Input
+            moveInput = InputController.Instance.GetMoveInput();
+            
+            // Adjust Output
             Vector2 adjustedMoveInput = moveInput * currentSpeed;
             Vector3 moveGoal = (adjustedMoveInput.x * transform.right) + (adjustedMoveInput.y * transform.forward);
 
             moveOutput = Vector3.Lerp(moveOutput, moveGoal, moveInterpolationSpeed * Time.deltaTime);
-            moveOutput.y = -1f * Time.deltaTime;
-            
-            // Rotate Player
-            transform.Rotate(Vector3.up, lookOutput * Time.deltaTime);
+            moveOutput.y = gravity;
             
             // Move Player
             _characterController.Move(moveOutput * Time.deltaTime);
         }
 
+        /// <summary>
+        /// Starts the running state on the player.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="eventArgs"></param>
         private void StartRun(object sender, EventArgs eventArgs)
         {
             currentSpeed = runSpeed;
         }
 
+        /// <summary>
+        /// Ends the running state on the player.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="eventArgs"></param>
         private void EndRun(object sender, EventArgs eventArgs)
         {
             currentSpeed = walkSpeed;

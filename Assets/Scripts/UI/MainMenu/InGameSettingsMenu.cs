@@ -8,7 +8,9 @@ namespace UI.MainMenu
 {
     public class InGameSettingsMenu : MonoBehaviour
     {
-        [SerializeField] private Slider volumeSlider, lookSlider;
+        [Header("References")] 
+        [SerializeField] private Slider volumeSlider; 
+        [SerializeField] private Slider lookSlider;
         [SerializeField] private TextMeshProUGUI volumeText, lookText;
         [SerializeField] private Button backButton, saveButton, exitButton;
 

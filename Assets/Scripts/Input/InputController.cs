@@ -14,7 +14,8 @@ namespace Input
         public event EventHandler OnThrowPressedAction;
         public event EventHandler OnMenuPressedAction;
         public event EventHandler OnRunPressedAction;
-        public event EventHandler OnRunReleasedAction; 
+        public event EventHandler OnRunReleasedAction;
+        public event EventHandler OnDropPressedAction;
     
         private void Awake()
         {
@@ -29,6 +30,7 @@ namespace Input
             _inputActions.Primary.Tooltip.performed += OnTooltipPerformed;
             _inputActions.Primary.Menu.performed += OnMenuPerformed;
             _inputActions.Primary.Throw.performed += OnThrowPerformed;
+            _inputActions.Primary.Drop.performed += OnDropPerformed;
             
             _inputActions.Primary.Run.performed += OnRunPerformed;
             _inputActions.Primary.Run.canceled += OnRunReleased;
@@ -81,6 +83,15 @@ namespace Input
         private void OnRunReleased(InputAction.CallbackContext context)
         {
             OnRunReleasedAction?.Invoke(this, EventArgs.Empty);
+        }
+
+        /// <summary>
+        /// Called when the player pressed the drop button.
+        /// </summary>
+        /// <param name="context"></param>
+        private void OnDropPerformed(InputAction.CallbackContext context)
+        {
+            OnDropPressedAction?.Invoke(this, EventArgs.Empty);
         }
 
         /**
