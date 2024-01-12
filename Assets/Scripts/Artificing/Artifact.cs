@@ -15,21 +15,24 @@ namespace Artificing
         [SerializeField] private DialogPopup artifactPopup;
         
         [Header("Artifact Values")]
-        [SerializeField] private WeaponType weaponType;
         [SerializeField] private ArtifactComponents currentComponents;
         [SerializeField] private ArtifactComponents targetComponents;
+        [field: SerializeField] public bool targetComponentsSet { get; private set; }
 
-        private void Start()
+        private void Awake()
         {
-            currentComponents = ArtifactComponents.GenerateNewArtifact(2, true, true);
+            currentComponents = ArtifactComponents.Empty();
             targetComponents = ArtifactComponents.Empty();
-            
-            UpdateArtifactString();
         }
 
         private void Update()
         {
             UpdateArtifactString();
+        }
+
+        public void SetWeaponType(WeaponType newType)
+        {
+            currentComponents.WeaponType = newType;
         }
 
         /// <summary>
@@ -62,6 +65,28 @@ namespace Artificing
             currentComponents.Rarity = rarity;
         }
 
+        
+        /// <summary>
+        /// Changes the target artifact.
+        /// </summary>
+        /// <param name="components"></param>
+        public void SetTargetArtifact(ArtifactComponents components)
+        {
+            if (targetComponentsSet) return;
+            
+            targetComponents = components;
+            targetComponentsSet = true;
+        }
+
+        /// <summary>
+        /// Returns this objects current artifact component.
+        /// </summary>
+        /// <returns></returns>
+        public ArtifactComponents GetArtifactComponent()
+        {
+            return currentComponents;
+        }
+
         /// <summary>
         /// Updates the string for the artifact tooltip to match the artifacts description.
         /// </summary>
@@ -87,8 +112,13 @@ namespace Artificing
 
         public ArtifactComponents(WeaponType weaponType, List<Imbuement> imbuements, Modification modification, Rarity rarity)
         {
+            List<Imbuement> adjustedImbuements = new List<Imbuement>();
+
+            foreach (Imbuement imbuement in imbuements)
+                adjustedImbuements.Add(!adjustedImbuements.Contains(imbuement) ? imbuement : Imbuement.None);
+            
             WeaponType = weaponType;
-            Imbuements = imbuements;
+            Imbuements = adjustedImbuements;
             Modification = modification;
             Rarity = rarity;
         }
@@ -166,9 +196,15 @@ namespace Artificing
             
             string imbuementBase = string.Empty;
 
+            foreach (var imbuement in artifactComponents.Imbuements.ToArray())
+            {
+                if (imbuement == Imbuement.None)
+                    artifactComponents.Imbuements.Remove(imbuement);
+            }
+
             for (int i = 0; i < artifactComponents.Imbuements.Count; i++)
             {
-                if (artifactComponents.Imbuements.Contains(Imbuement.None))
+                if (artifactComponents.Imbuements[i] == Imbuement.None)
                     break;
                 
                 if (i == 0)

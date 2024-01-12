@@ -98,6 +98,15 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Select"",
+                    ""type"": ""Button"",
+                    ""id"": ""f0580a47-a6d9-480f-aac5-214f9a67702c"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -320,6 +329,28 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""action"": ""Drop"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""8c2935f5-f296-4d93-afe3-773533170f14"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Select"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""b5c6c682-43ce-4d4c-ae48-4fafcd22add1"",
+                    ""path"": ""<Gamepad>/buttonSouth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Select"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -336,6 +367,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         m_Primary_Throw = m_Primary.FindAction("Throw", throwIfNotFound: true);
         m_Primary_Run = m_Primary.FindAction("Run", throwIfNotFound: true);
         m_Primary_Drop = m_Primary.FindAction("Drop", throwIfNotFound: true);
+        m_Primary_Select = m_Primary.FindAction("Select", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -405,6 +437,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_Primary_Throw;
     private readonly InputAction m_Primary_Run;
     private readonly InputAction m_Primary_Drop;
+    private readonly InputAction m_Primary_Select;
     public struct PrimaryActions
     {
         private @InputActions m_Wrapper;
@@ -417,6 +450,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         public InputAction @Throw => m_Wrapper.m_Primary_Throw;
         public InputAction @Run => m_Wrapper.m_Primary_Run;
         public InputAction @Drop => m_Wrapper.m_Primary_Drop;
+        public InputAction @Select => m_Wrapper.m_Primary_Select;
         public InputActionMap Get() { return m_Wrapper.m_Primary; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -450,6 +484,9 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
             @Drop.started += instance.OnDrop;
             @Drop.performed += instance.OnDrop;
             @Drop.canceled += instance.OnDrop;
+            @Select.started += instance.OnSelect;
+            @Select.performed += instance.OnSelect;
+            @Select.canceled += instance.OnSelect;
         }
 
         private void UnregisterCallbacks(IPrimaryActions instance)
@@ -478,6 +515,9 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
             @Drop.started -= instance.OnDrop;
             @Drop.performed -= instance.OnDrop;
             @Drop.canceled -= instance.OnDrop;
+            @Select.started -= instance.OnSelect;
+            @Select.performed -= instance.OnSelect;
+            @Select.canceled -= instance.OnSelect;
         }
 
         public void RemoveCallbacks(IPrimaryActions instance)
@@ -505,5 +545,6 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         void OnThrow(InputAction.CallbackContext context);
         void OnRun(InputAction.CallbackContext context);
         void OnDrop(InputAction.CallbackContext context);
+        void OnSelect(InputAction.CallbackContext context);
     }
 }

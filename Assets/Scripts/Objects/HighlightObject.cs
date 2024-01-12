@@ -9,6 +9,7 @@ namespace Objects
     public class HighlightObject : MonoBehaviour
     {
         [Header("References")]
+        [SerializeField] private Transform topParent;
         [SerializeField] private Material highlightMaterial;
         private static readonly int Alpha = Shader.PropertyToID("_Alpha");
         private Camera mainCamera;
@@ -27,7 +28,7 @@ namespace Objects
             List<Transform> hitList = hits.Select(hit => hit.transform).ToList();
 
             if (hitList.Count <= 0) return;
-            if (!hitList.Contains(transform.parent))
+            if (!hitList.Contains(topParent))
             {
                 DoHighlight(false);
                 return;
@@ -38,7 +39,7 @@ namespace Objects
                 if (hit == null) continue;
                 if (!hit.CompareTag("Interactable")) continue;
                 
-                if (hit.Equals(transform.parent))
+                if (hit.Equals(topParent))
                 {
                     DoHighlight(!CheckComponents(hit));
                     

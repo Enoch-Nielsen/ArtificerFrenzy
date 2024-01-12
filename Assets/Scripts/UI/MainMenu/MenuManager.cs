@@ -33,7 +33,7 @@ namespace UI.MainMenu
         public void Exit()
         {
             Application.Quit();
-            EditorApplication.ExitPlaymode();
+            //EditorApplication.ExitPlaymode();
         }
 
         public void SetCurrentMenuState(MenuState targetState)

@@ -1,3 +1,4 @@
+using System;
 using Artificing;
 using Interface;
 using Player;
@@ -7,6 +8,7 @@ namespace Objects
 {
     public class Workstation : MonoBehaviour, I_Interactable
     {
+        
         [Header("References")]
         [SerializeField] private Transform cameraBoom, lookAt;
         
@@ -24,6 +26,17 @@ namespace Objects
                 CameraController.Instance.SwitchCameraTarget(FirstPersonController.Instance.transform);
             
             isTargeted = !isTargeted;
+
+            if (isTargeted)
+            {
+                Cursor.visible = true;
+                Cursor.lockState = CursorLockMode.Confined;
+            }
+            else
+            {
+                Cursor.visible = false;
+                Cursor.lockState = CursorLockMode.Locked;
+            }
 
             if (hasStation)
             {

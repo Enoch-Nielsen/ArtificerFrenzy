@@ -1,3 +1,4 @@
+using System;
 using Objects;
 using UnityEngine;
 
@@ -5,6 +6,8 @@ namespace Artificing
 {
     public class Station : MonoBehaviour
     {
+        public event Action OnPlayerExitStation;
+
         [Header("Fields")] 
         [SerializeField] private Transform holdTransform;
         [SerializeField] private float throwForce;
@@ -39,9 +42,15 @@ namespace Artificing
         /// </summary>
         public void RemoveArtifact()
         {
-            if (currentHeldObject == null) return;
+            if (currentHeldObject == null)
+            {
+                OnPlayerExitStation?.Invoke();
+                return;
+            }
             
             Pickup tempPickup = currentHeldObject;
+            
+            OnPlayerExitStation?.Invoke();
             
             MakeDropQuery();
         }
@@ -56,6 +65,17 @@ namespace Artificing
             currentHeldObject.Drop();
             currentHeldObject.Interact();
             currentHeldObject = null;
+        }
+
+        public bool TryGetArtifact(out Artifact artifact)
+        {
+            artifact = null;
+            if (currentHeldObject == null)
+                return false;
+            
+            bool obtained = currentHeldObject.TryGetComponent(out Artifact a);
+            artifact = a;
+            return obtained;
         }
     }
 }

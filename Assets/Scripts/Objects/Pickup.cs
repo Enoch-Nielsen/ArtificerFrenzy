@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Objects
 {
-    [RequireComponent(typeof(Rigidbody), typeof(BoxCollider))]
+    [RequireComponent(typeof(Rigidbody), typeof(Collider))]
     public class Pickup : MonoBehaviour, I_Interactable
     {
         [Header("References")]

@@ -128,6 +128,6 @@ public class GameManager : MonoBehaviour
     public void ExitGame()
     {
         Application.Quit();
-        EditorApplication.ExitPlaymode();
+        //EditorApplication.ExitPlaymode();
     }
 }

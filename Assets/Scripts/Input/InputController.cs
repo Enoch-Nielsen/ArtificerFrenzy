@@ -16,6 +16,7 @@ namespace Input
         public event EventHandler OnRunPressedAction;
         public event EventHandler OnRunReleasedAction;
         public event EventHandler OnDropPressedAction;
+        public event EventHandler OnSelectPressedAction;
     
         private void Awake()
         {
@@ -31,6 +32,7 @@ namespace Input
             _inputActions.Primary.Menu.performed += OnMenuPerformed;
             _inputActions.Primary.Throw.performed += OnThrowPerformed;
             _inputActions.Primary.Drop.performed += OnDropPerformed;
+            _inputActions.Primary.Select.performed += OnSelectPerformed;
             
             _inputActions.Primary.Run.performed += OnRunPerformed;
             _inputActions.Primary.Run.canceled += OnRunReleased;
@@ -92,6 +94,15 @@ namespace Input
         private void OnDropPerformed(InputAction.CallbackContext context)
         {
             OnDropPressedAction?.Invoke(this, EventArgs.Empty);
+        }
+
+        /// <summary>
+        /// Called when the player attempts to select.
+        /// </summary>
+        /// <param name="context"></param>
+        private void OnSelectPerformed(InputAction.CallbackContext context)
+        {
+            OnSelectPressedAction?.Invoke(this, EventArgs.Empty);
         }
 
         /**
